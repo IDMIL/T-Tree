@@ -1,0 +1,233 @@
+#N canvas 160 23 1280 855 12;
+#X obj 20 89 netreceive -u -b;
+#X obj 20 110 oscparse;
+#X obj 20 140 route list;
+#X obj 20 200 route raw orientation ypr info norm battery instrument
+;
+#X obj 460 163 vsl 45 135 -1 1 0 0 empty empty AccelX 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 510 163 vsl 45 135 -1 1 0 0 empty empty AccelY 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 560 163 vsl 45 135 -1 1 0 0 empty empty AccelZ 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 610 163 vsl 45 135 -1 1 0 0 empty empty GyroX 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 660 163 vsl 45 135 -1 1 0 0 empty empty GyroY 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 710 163 vsl 45 135 -1 1 0 0 empty empty GyroZ 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 910 163 vsl 45 135 0 1 0 0 empty empty Pressure 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 960 163 vsl 45 135 0 1 0 0 empty empty Piezo 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 760 163 vsl 45 135 -1 1 0 0 empty empty MagX 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 810 163 vsl 45 135 -1 1 0 0 empty empty MagY 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 860 163 vsl 45 135 -1 1 0 0 empty empty MagZ 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X floatatom 560 306 7 0 0 0 - - -, f 7;
+#X floatatom 610 306 7 0 0 0 - - -, f 7;
+#X floatatom 660 306 7 0 0 0 - - -, f 7;
+#X floatatom 710 306 7 0 0 0 - - -, f 7;
+#X floatatom 910 306 7 0 0 0 - - -, f 7;
+#X floatatom 960 306 7 0 0 0 - - -, f 7;
+#X floatatom 760 306 7 0 0 0 - - -, f 7;
+#X floatatom 810 306 7 0 0 0 - - -, f 7;
+#X floatatom 860 306 7 0 0 0 - - -, f 7;
+#X floatatom 510 306 7 0 0 0 - - -, f 7;
+#X floatatom 460 306 7 0 0 0 - - -, f 7;
+#X obj 581 113 unpack f f f;
+#X obj 661 113 unpack f f f;
+#X obj 742 113 unpack f f f;
+#X obj 557 60 route capsense accl gyro magn fsr piezo, f 62;
+#X text 383 120 Normalized (/norm);
+#X msg 20 60 listen 8000;
+#X obj 20 170 route T-Stick_203;
+#X obj 20 20 loadbang;
+#X obj 20 39 delay 250;
+#X obj 543 420 ctlout 15 2;
+#X floatatom 543 390 5 0 0 0 - - -, f 5;
+#X floatatom 663 400 5 0 0 0 - - -, f 5;
+#X obj 663 430 ctlout 16 2;
+#X floatatom 793 400 5 0 0 0 - - -, f 5;
+#X obj 793 430 ctlout 17 2;
+#X floatatom 933 400 5 0 0 0 - - -, f 5;
+#X obj 933 370 scale 0 1 0 127;
+#X obj 933 430 ctlout 18 2;
+#X obj 543 360 scale -1 1 127 0;
+#X obj 663 370 scale -1 1 127 0;
+#X obj 793 370 scale -1 1 127 0;
+#X obj 214 224 s \$0-norm-203;
+#X obj 540 40 r \$0-norm-203;
+#X floatatom 612 591 5 0 3 0 - - -, f 5;
+#X floatatom 662 591 5 0 255 0 - - -, f 5;
+#X floatatom 712 591 5 0 255 0 - - -, f 5;
+#X floatatom 762 591 5 0 255 0 - - -, f 5;
+#X obj 622 681 led_ring_osc;
+#X obj 662 631 t b f;
+#X obj 712 631 t b f;
+#X obj 762 631 t b f;
+#X obj 42 374 netreceive -u -b;
+#X obj 42 395 oscparse;
+#X obj 42 425 route list;
+#X obj 42 485 route raw orientation ypr info norm battery instrument
+;
+#X obj 42 305 loadbang;
+#X obj 42 324 delay 250;
+#X msg 42 345 listen 8001;
+#X obj 42 455 route T-Stick_420;
+#X obj 236 509 s \$0-norm-420;
+#X obj 947 649 vsl 45 135 -1 1 0 0 empty empty AccelX 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 997 649 vsl 45 135 -1 1 0 0 empty empty AccelY 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 1047 649 vsl 45 135 -1 1 0 0 empty empty AccelZ 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 1097 649 vsl 45 135 -1 1 0 0 empty empty GyroX 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 1147 649 vsl 45 135 -1 1 0 0 empty empty GyroY 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 1197 649 vsl 45 135 -1 1 0 0 empty empty GyroZ 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 1397 649 vsl 45 135 0 1 0 0 empty empty Pressure 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 1447 649 vsl 45 135 0 1 0 0 empty empty Piezo 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 1247 649 vsl 45 135 -1 1 0 0 empty empty MagX 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 1297 649 vsl 45 135 -1 1 0 0 empty empty MagY 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X obj 1347 649 vsl 45 135 -1 1 0 0 empty empty MagZ 0 -9 0 10 #fcfcfc
+#000000 #000000 0 1;
+#X floatatom 1047 792 7 0 0 0 - - -, f 7;
+#X floatatom 1097 792 7 0 0 0 - - -, f 7;
+#X floatatom 1147 792 7 0 0 0 - - -, f 7;
+#X floatatom 1197 792 7 0 0 0 - - -, f 7;
+#X floatatom 1397 792 7 0 0 0 - - -, f 7;
+#X floatatom 1447 792 7 0 0 0 - - -, f 7;
+#X floatatom 1247 792 7 0 0 0 - - -, f 7;
+#X floatatom 1297 792 7 0 0 0 - - -, f 7;
+#X floatatom 1347 792 7 0 0 0 - - -, f 7;
+#X floatatom 997 792 7 0 0 0 - - -, f 7;
+#X floatatom 947 792 7 0 0 0 - - -, f 7;
+#X obj 1068 599 unpack f f f;
+#X obj 1148 599 unpack f f f;
+#X obj 1229 599 unpack f f f;
+#X obj 1044 546 route capsense accl gyro magn fsr piezo, f 62;
+#X text 870 606 Normalized (/norm);
+#X floatatom 1030 876 5 0 0 0 - - -, f 5;
+#X floatatom 1150 886 5 0 0 0 - - -, f 5;
+#X floatatom 1280 886 5 0 0 0 - - -, f 5;
+#X floatatom 1420 886 5 0 0 0 - - -, f 5;
+#X obj 1420 856 scale 0 1 0 127;
+#X obj 1030 846 scale -1 1 127 0;
+#X obj 1150 856 scale -1 1 127 0;
+#X obj 1280 856 scale -1 1 127 0;
+#X obj 1027 526 r \$0-norm-420;
+#X obj 1030 906 ctlout 15 3;
+#X obj 1150 916 ctlout 16 3;
+#X obj 1280 916 ctlout 17 3;
+#X obj 1420 916 ctlout 18 3;
+#X connect 0 0 1 0;
+#X connect 1 0 2 0;
+#X connect 2 0 32 0;
+#X connect 3 4 47 0;
+#X connect 4 0 25 0;
+#X connect 5 0 24 0;
+#X connect 6 0 15 0;
+#X connect 7 0 16 0;
+#X connect 8 0 17 0;
+#X connect 9 0 18 0;
+#X connect 10 0 19 0;
+#X connect 11 0 20 0;
+#X connect 12 0 21 0;
+#X connect 13 0 22 0;
+#X connect 14 0 23 0;
+#X connect 16 0 44 0;
+#X connect 17 0 45 0;
+#X connect 18 0 46 0;
+#X connect 19 0 42 0;
+#X connect 26 0 4 0;
+#X connect 26 1 5 0;
+#X connect 26 2 6 0;
+#X connect 27 0 7 0;
+#X connect 27 1 8 0;
+#X connect 27 2 9 0;
+#X connect 28 0 12 0;
+#X connect 28 1 13 0;
+#X connect 28 2 14 0;
+#X connect 29 1 26 0;
+#X connect 29 2 27 0;
+#X connect 29 3 28 0;
+#X connect 29 4 10 0;
+#X connect 29 5 11 0;
+#X connect 31 0 0 0;
+#X connect 32 0 3 0;
+#X connect 33 0 34 0;
+#X connect 34 0 31 0;
+#X connect 36 0 35 0;
+#X connect 37 0 38 0;
+#X connect 39 0 40 0;
+#X connect 41 0 43 0;
+#X connect 42 0 41 0;
+#X connect 44 0 36 0;
+#X connect 45 0 37 0;
+#X connect 46 0 39 0;
+#X connect 48 0 29 0;
+#X connect 49 0 53 0;
+#X connect 50 0 54 0;
+#X connect 51 0 55 0;
+#X connect 52 0 56 0;
+#X connect 54 0 49 0;
+#X connect 54 1 53 1;
+#X connect 55 0 49 0;
+#X connect 55 1 53 2;
+#X connect 56 0 49 0;
+#X connect 56 1 53 3;
+#X connect 57 0 58 0;
+#X connect 58 0 59 0;
+#X connect 59 0 64 0;
+#X connect 60 4 65 0;
+#X connect 61 0 62 0;
+#X connect 62 0 63 0;
+#X connect 63 0 57 0;
+#X connect 64 0 60 0;
+#X connect 66 0 87 0;
+#X connect 67 0 86 0;
+#X connect 68 0 77 0;
+#X connect 69 0 78 0;
+#X connect 70 0 79 0;
+#X connect 71 0 80 0;
+#X connect 72 0 81 0;
+#X connect 73 0 82 0;
+#X connect 74 0 83 0;
+#X connect 75 0 84 0;
+#X connect 76 0 85 0;
+#X connect 78 0 98 0;
+#X connect 79 0 99 0;
+#X connect 80 0 100 0;
+#X connect 81 0 97 0;
+#X connect 88 0 66 0;
+#X connect 88 1 67 0;
+#X connect 88 2 68 0;
+#X connect 89 0 69 0;
+#X connect 89 1 70 0;
+#X connect 89 2 71 0;
+#X connect 90 0 74 0;
+#X connect 90 1 75 0;
+#X connect 90 2 76 0;
+#X connect 91 1 88 0;
+#X connect 91 2 89 0;
+#X connect 91 3 90 0;
+#X connect 91 4 72 0;
+#X connect 91 5 73 0;
+#X connect 93 0 102 0;
+#X connect 94 0 103 0;
+#X connect 95 0 104 0;
+#X connect 96 0 105 0;
+#X connect 97 0 96 0;
+#X connect 98 0 93 0;
+#X connect 99 0 94 0;
+#X connect 100 0 95 0;
+#X connect 101 0 91 0;
