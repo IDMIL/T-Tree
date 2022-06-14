@@ -1,4 +1,5 @@
 from collections import namedtuple
+from functools import reduce
 from enum import Enum
 
 
@@ -46,9 +47,9 @@ class TStickParser:
             elif self.state == ParserState.AWAITING_INFO:
                 if bite in Codes.codes:
                     message = Message(Codes.codes[bite], [])
-                    self.state = ParserState.AWAITING_DATA
                 else:
-                    self.state = ParserState.UNKNOWN
+                    message = Message("unknown", [])
+                self.state = ParserState.AWAITING_DATA
             elif self.state == ParserState.AWAITING_DATA:
                 if bite != Codes.delimiter:
                     message.data.append(bite)
