@@ -45,11 +45,18 @@ class TStickParser:
                 if bite in Codes.codes:
                     message = Message(Codes.codes[bite], [])
                     self.state = ParserState.AWAITING_DATA
+                else:
+                    self.state = ParserState.UNKNOWN
             elif self.state == ParserState.AWAITING_DATA:
                 if bite != Codes.delimiter:
                     message.data.append(bite)
+                elif bite == Codes.escape:
+                    self.state = ParserState.ESCAPED
                 else:
                     messages.append(message)
                     message = None
-                    self.state = ParserState.UNKNOWN
+                    self.state = ParserState.AWAITING_INFO
+            elif self.state == ParserState.ESCAPED:
+                message.data.append(bite)
+                self.state = ParserState.AWAITING_DATA
         return messages
