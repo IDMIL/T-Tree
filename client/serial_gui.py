@@ -7,21 +7,22 @@ import PySimpleGUI as sg
 
 def window_function():
     sg.theme('DarkAmber')   # Add a touch of color
-    message_box = sg.Multiline(autoscroll=True, auto_refresh=True, disabled=True, size=(80,10))
+    recv_message_box = sg.Multiline(autoscroll=True, auto_refresh=True, disabled=True, size=(80,10))
+    send_message_box = sg.InputText()
     # All the stuff inside your window.
     layout = [  [sg.Text('Received messages')],
-                [message_box],
-                [sg.Text('Send message:'), sg.InputText(), sg.Button('Send', key='send_btn')],
+                [recv_message_box],
+                [sg.Text('Send message:'), send_message_box, sg.Button('Send')],
                 [sg.Button('Quit')],
     ]
     # Create the Window
     window = sg.Window('Serial Communicator', layout)
     while True:
         event, values = window.read() 
-        print(event, values)   
         if event == sg.WIN_CLOSED or event == 'Quit': # if user closes window or clicks cancel
             break
-        print('You entered ', values[0])
+        elif event == 'Send':
+            print('You entered', send_message_box.get())
 
     window.close()
 
