@@ -9,7 +9,8 @@ import serial
 import serial.tools.list_ports
 
 DEFAULT_DEVICE = '/dev/ttyUSB1'
-ser = serial.Serial(DEFAULT_DEVICE, baudrate=115200)
+ser = serial.Serial()
+ser.baudrate = 115200
 
 recv_message_box = sg.Multiline(autoscroll=True, auto_refresh=True, disabled=True, size=(80,10))
 send_message_box = sg.Combo(('reboot'), readonly=True, size=(20, 5))
@@ -32,6 +33,10 @@ def window_function():
         event, values = window.read() 
         if event == sg.WIN_CLOSED or event == 'Quit': # if user closes window or clicks cancel
             break
+        elif event == 'Open':
+            ser.port = ports_dropdown.get()
+            if not ser.is_open:
+                ser.open()
         elif event == 'Send':
             message = send_message_box.get()
             ser.write(bytes(message, 'utf-8'))
@@ -51,6 +56,9 @@ def read_json(filename):
 
 def serial_daemon():
     while True:
+        if not ser.is_open:
+            sleep(1)
+            continue
         data = ser.readline().decode('utf-8', 'backslashreplace')
         recv_message_box.print(data)
 
