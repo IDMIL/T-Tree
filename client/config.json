@@ -1,5 +1,5 @@
 {
-    "device": "CONFIGStick",
+    "device": "TStick",
     "id": 311,
     "author": "Edu Meneses",
     "institution": "SAT/IDMIL (2022)",
@@ -13,5 +13,3 @@
     "oscPORT2": 8000,
     "localPORT": 8000
 }
-
-
