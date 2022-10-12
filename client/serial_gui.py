@@ -89,7 +89,7 @@ def serial_daemon():
 def main():
     w = threading.Thread(target=window_function)
     w.start()
-    x = threading.Thread(target=serial_daemon)
+    x = threading.Thread(target=serial_daemon, daemon=True)
     x.start()
 
 
