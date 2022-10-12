@@ -13,7 +13,7 @@ ser = serial.Serial()
 ser.baudrate = 115200
 
 recv_message_box = sg.Multiline(autoscroll=True, auto_refresh=True, disabled=True, size=(80,10), expand_y=True, expand_x=True)
-send_message_box = sg.Combo(['reboot', 'whatareyou', 'getconfig'], size=(20, 5))
+send_message_box = sg.Combo(['reboot', 'whatareyou', 'readconfig', 'writeconfig', 'readsettings', 'writesettings'], size=(20, 5))
 ports_dropdown = sg.Combo((), readonly=True, size=(20, 5))
 settings_button = sg.Button('Settings', disabled=True)
 config_button = sg.Button('Config', disabled=True)
@@ -68,9 +68,9 @@ def window_function():
             ports = serial.tools.list_ports.comports()
             ports_dropdown.update(values=[port for (port, desc, hwid) in ports])
         elif event == 'Settings':
-            ser.write(bytes('settings ' + read_json('settings.json'), 'utf-8'))
+            ser.write(bytes('sendsettings ' + read_json('settings.json'), 'utf-8'))
         elif event == 'Config':
-            ser.write(bytes('config ' + read_json('config.json'), 'utf-8'))
+            ser.write(bytes('sendconfig ' + read_json('config.json'), 'utf-8'))
     window.close()
 
 def read_json(filename):
