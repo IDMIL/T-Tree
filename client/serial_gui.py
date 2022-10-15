@@ -12,7 +12,7 @@ DEFAULT_DEVICE = '/dev/ttyUSB1'
 ser = serial.Serial()
 ser.baudrate = 115200
 
-recv_message_box = sg.Multiline(autoscroll=True, auto_refresh=True, disabled=True, size=(80,10), expand_y=True, expand_x=True)
+recv_message_box = sg.Multiline(autoscroll=False, auto_refresh=True, disabled=True, size=(80,10), expand_y=True, expand_x=True)
 send_message_box = sg.Combo(['reboot', 'whatareyou', 'readconfig', 'writeconfig', 'readsettings', 'writesettings'], size=(20, 5))
 ports_dropdown = sg.Combo((), readonly=True, size=(20, 5))
 settings_button = sg.Button('Settings', disabled=True)
@@ -83,7 +83,8 @@ def serial_daemon():
             sleep(1)
             continue
         data = ser.readline().decode('utf-8', 'backslashreplace')
-        recv_message_box.print(data)
+        # recv_message_box.print(data)
+        print(data)
 
 
 def main():
