@@ -67,6 +67,7 @@ class SerialManager:
         if needs_config:
             print(f'configuring {serial_number}')
             device.ser.write(f'sendconfig {json.dumps(self.desired_config)}'.encode('utf-8'))
+            # TODO(p42ul): Replace this with an ACK from the device side.
             sleep(3)
             device.ser.write(b'writeconfig')
             sleep(3)
@@ -75,6 +76,8 @@ class SerialManager:
             self.configure_device(device)
         else:
             print(f'{device.serial_number} is configured properly!')
+            print(f'rebooting {serial_number} one more time to load new config')
+            device.ser.write(b'reboot')
 
     def wait_for_device_ready(self, device):
         ser = device.ser
