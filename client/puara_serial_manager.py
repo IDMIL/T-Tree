@@ -5,7 +5,6 @@ import json
 import socket
 import threading
 from time import sleep
-from unittest.mock import DEFAULT
 
 # Third-party libraries
 import serial
@@ -39,7 +38,6 @@ class Device(NamedTuple):
             return self.name
 
     def named_device(self, name):
-        print(f'{self} -> {name}')
         return Device(self.serial_number, self.ser, self.osc_port, name)
 
 class PuaraSerialException(Exception):
@@ -53,6 +51,7 @@ class SerialManager:
         self.scanner.start()
         self.osc_port = STARTING_PORT
         self.ip_addr = self.get_ip_address()
+        print(f'your ip address is {self.ip_addr}')
         with open(TEMPLATE_PATH, 'r') as f:
             self.config_template = Template(f.read())
 
@@ -84,8 +83,10 @@ class SerialManager:
 
     def configure_device(self, device: Device):
         self.wait_for_device_ready(device)
-        name = self.get_device_name(device)
-        device = device.named_device(name)
+        if device.name is None:
+            name = self.get_device_name(device)
+            device = device.named_device(name)
+            print(f'{device.serial_number} is {device.name}')
         config_data = self.get_config_data(device)
         config_json = json.loads(config_data)
         desired_data = self.config_template.substitute(ip_addr=self.ip_addr, osc_port=device.osc_port)
@@ -119,6 +120,8 @@ class SerialManager:
             if expected in data:
                 break
             sleep(READ_TIMEOUT_SECS)
+        ser.reset_output_buffer()
+        sleep(READ_TIMEOUT_SECS)
 
     def get_response(self, device: Device, request: str) -> str:
         ser = device.ser
@@ -146,7 +149,8 @@ class SerialManager:
 
 def main():
     sm = SerialManager()
-    sm.scanner.join()
+    while True:
+        sleep(1)
 
 
 if __name__ == '__main__':
