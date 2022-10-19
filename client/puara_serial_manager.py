@@ -82,11 +82,14 @@ class SerialManager:
             sleep(1)
 
     def configure_device(self, device: Device):
+        print(f'waiting for {device} to become ready...')
         self.wait_for_device_ready(device)
+        print(f'{device} ready.')
         if device.name is None:
             name = self.get_device_name(device)
             device = device.named_device(name)
             print(f'{device.serial_number} is {device.name}')
+        print(f'getting config data from {device}')
         config_data = self.get_config_data(device)
         config_json = json.loads(config_data)
         desired_data = self.config_template.substitute(ip_addr=self.ip_addr, osc_port=device.osc_port)
