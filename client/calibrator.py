@@ -34,6 +34,7 @@ class MinMax:
 def tstick_handler(address: str, *args: tuple):
     global ranges
     if address not in ranges:
+        print(f'found new signal {address}')
         ranges[address] = MinMax(args)
     else:
         ranges[address].update(args)
