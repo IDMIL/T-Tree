@@ -1,6 +1,6 @@
 {
-    "wifiSSID": "tstick_network",
-    "wifiPSK": "mappings",
+    "wifiSSID": "$ssid",
+    "wifiPSK": "$psk",
     "oscPORT1": $osc_port,
     "oscIP1": "$ip_addr"
 }

@@ -1,4 +1,17 @@
+"""Puara Serial Manager.
+
+Usage:
+  puara_serial_manager.py <wifiSSID> <wifiPSK>
+  puara_serial_manager.py -h | --help
+  puara_serial_manager.py -v | --version
+
+Options:
+  -h --help     Show this screen.
+  -v --version  Show version.
+"""
+
 # Standard libraries
+from collections import namedtuple
 from string import Template
 from typing import NamedTuple, Optional
 import json
@@ -7,6 +20,7 @@ import threading
 from time import sleep
 
 # Third-party libraries
+from docopt import docopt
 import serial
 import serial.tools.list_ports
 
@@ -24,6 +38,7 @@ TEMPLATE_PATH = 'config_template.json'
 DATA_START = b'<<<'
 DATA_END = b'>>>'
 
+WifiNetwork = namedtuple("WifiNetwork", ['ssid', 'psk'])
 
 class Device(NamedTuple):
     device_id: str
@@ -45,13 +60,15 @@ class PuaraSerialException(Exception):
 
 
 class SerialManager:
-    def __init__(self):
+    def __init__(self, wifi: WifiNetwork):
+        self.wifi = wifi
         self.devices = {}
         self.scanner = threading.Thread(target=self.scan_thread, daemon=True)
         self.scanner.start()
         self.osc_port = STARTING_PORT
         self.ip_addr = self.get_ip_address()
         print(f'your ip address is {self.ip_addr}')
+        print(f'assigning ports starting at {self.osc_port}')
         with open(TEMPLATE_PATH, 'r') as f:
             self.config_template = Template(f.read())
 
@@ -96,7 +113,8 @@ class SerialManager:
         print(f'getting config data from {device}')
         config_data = self.get_config_data(device)
         config_json = json.loads(config_data)
-        desired_data = self.config_template.substitute(ip_addr=self.ip_addr, osc_port=device.osc_port)
+        desired_data = self.config_template.substitute(ip_addr=self.ip_addr, osc_port=device.osc_port,
+            ssid=self.wifi.ssid, psk=self.wifi.psk)
         desired_json = json.loads(desired_data)
         needs_config = False
         for k, desired_v in desired_json.items():
@@ -154,11 +172,13 @@ class SerialManager:
             print(f'{port}: hwid {port.hwid} vid {port.vid} pid {port.pid}')
 
 
-def main():
-    sm = SerialManager()
+def main(args):
+    wifi = WifiNetwork(ssid=args['<wifiSSID>'], psk=args['<wifiPSK>'])
+    _ = SerialManager(wifi)
     while True:
         sleep(1)
 
 
 if __name__ == '__main__':
-    main()
+    args = docopt(__doc__, version="Puara Serial Manager 0.1")
+    main(args)
