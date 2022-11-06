@@ -26,19 +26,19 @@ DATA_END = b'>>>'
 
 
 class Device(NamedTuple):
-    serial_number: str
+    device_id: str
     ser: serial.Serial
     osc_port: int
     name: Optional[str]=None
 
     def __str__(self):
         if self.name is None:
-            return self.serial_number
+            return self.device_id
         else:
             return self.name
 
     def named_device(self, name):
-        return Device(self.serial_number, self.ser, self.osc_port, name)
+        return Device(self.device_id, self.ser, self.osc_port, name)
 
 class PuaraSerialException(Exception):
     pass
@@ -65,20 +65,24 @@ class SerialManager:
     def scan_thread(self):
         while True:
             for port in serial.tools.list_ports.comports():
-                serial_number = port.serial_number
-                if serial_number not in self.devices:
+                device_id = port.serial_number
+                if not device_id:
+                    device_id = port.hwid
+                if device_id in self.devices:
+                    device = self.devices[device_id]
+                    # TODO(p42ul): do something with these?
+                else:
                     ser = serial.Serial()
                     ser.port, ser.baudrate, ser.timeout = port.device, BAUDRATE, READ_TIMEOUT_SECS
-                    ser.open()
-                    device = Device(serial_number, ser, self.osc_port)
-                    self.devices[serial_number] = device
+                    device = Device(device_id, ser, self.osc_port)
+                    self.devices[device_id] = device
                     print(f'found new serial device {device}')
+                    try:
+                        ser.open()
+                    except serial.SerialException as e:
+                        print(f"Couldn't open serial device {device}, got error {e}")
                     self.osc_port += 1
                     threading.Thread(target=self.configure_device, args=[device]).start()
-                else: # Reconnecting a device
-                    if not self.devices[serial_number].ser.is_open:
-                        print(f'reconnecting serial device {serial_number}')
-                        self.devices[serial_number].ser.open()
             sleep(1)
 
     def configure_device(self, device: Device):
@@ -88,7 +92,7 @@ class SerialManager:
         if device.name is None:
             name = self.get_device_name(device)
             device = device.named_device(name)
-            print(f'{device.serial_number} is {device.name}')
+            print(f'{device.device_id} is {device.name}')
         print(f'getting config data from {device}')
         config_data = self.get_config_data(device)
         config_json = json.loads(config_data)
@@ -110,7 +114,7 @@ class SerialManager:
             print(f'rebooting {device}')
             self.configure_device(device)
         else:
-            print(f'{device} has been assigned to port {device.osc_port}')
+            print(f'{device} has been successfully configured. rebooting once more')
             # Reboot the device once more to initialize the config.
             device.ser.write(b'reboot')
 
