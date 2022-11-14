@@ -1,0 +1,7 @@
+[Unit]
+Description=LEDs over OSC
+After=sound.target jackaudio.service
+[Service]
+ExecStart=/usr/bin/python ~/Documents/T-Tree/leds/led_osc.py
+[Install]
+WantedBy=multi-user.target
