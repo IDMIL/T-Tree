@@ -39,10 +39,6 @@ def handler(address: str, *args: tuple):
     else:
         ranges[address].update(args)
 
-def default_handler(address, *args):
-    print(f"i wasn't expecting {args} from {address}")
-
-
 def main():
     dispatcher = Dispatcher()
     dispatcher.set_default_handler(handler)
