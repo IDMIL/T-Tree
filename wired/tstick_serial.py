@@ -1,5 +1,5 @@
 # Local libraries
-from tstick_mappings import TStickParser
+from tstick_parser import TStickParser
 
 # Third-party libraries
 from pythonosc.udp_client import SimpleUDPClient
