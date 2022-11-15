@@ -1,5 +1,5 @@
+# Standard libraries
 from collections import namedtuple
-from functools import reduce
 from enum import Enum
 
 
@@ -8,22 +8,16 @@ Message = namedtuple("Message", ["name", "data"])
 # Mappings for the Soprano T-Stick 2G 012.
 class Codes:
     codes = {
-        # Two bytes, indicating serial number and firmware revision
-        0: "info",
-        # Six bytes, for six different areas of t-Stick?
-        1: "touch",
-        # Unused.
-        2: "jab",
-        # Unused.
-        3: "tap",
+        0: "info", # Two bytes, indicating serial number and firmware revision
+        1: "touch", # Six bytes, for six different areas of t-Stick?
+        2: "jab", # ?
+        3: "tap", # ?
         # Between 5 and 11 bytes.
         # First three are X/Y/Z of acceleration,
         # then an optional 6 bytes for gyro (rotation) data,
         # then one byte for pressure and one byte for piezo.
         4: "periodic",
     }
-    # Don't know why these were chosen as the delimiter and the escape character, respectively.
-    # But here they are.
     delimiter = 100
     escape = 101
 
