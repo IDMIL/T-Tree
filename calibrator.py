@@ -31,10 +31,10 @@ class MinMax:
         return self.__str__()
         
 
-def tstick_handler(address: str, *args: tuple):
+def handler(address: str, *args: tuple):
     global ranges
     if address not in ranges:
-        print(f'found new T-Stick signal {address}')
+        print(f'found new signal {address}')
         ranges[address] = MinMax(args)
     else:
         ranges[address].update(args)
@@ -45,11 +45,10 @@ def default_handler(address, *args):
 
 def main():
     dispatcher = Dispatcher()
-    dispatcher.map("/TStick_*/*", tstick_handler)
-    dispatcher.set_default_handler(default_handler)
+    dispatcher.set_default_handler(handler)
 
     ip = "0.0.0.0"
-    port = 8001
+    port = 1337
 
     server = BlockingOSCUDPServer((ip, port), dispatcher)
     try:
