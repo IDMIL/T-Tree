@@ -1,27 +1,44 @@
+# Standard library
+from time import sleep
+import threading
+
+# Third-party libraries
+from colour import Color
 from pythonosc.dispatcher import Dispatcher
 from pythonosc.osc_server import BlockingOSCUDPServer
 
-from led_utils import set_ring
+# Local libraries
+from led_ring import LEDRing, RealLED, FakeLED
+
+IP = '0.0.0.0'
+PORT = 1234
+
+class OscLed:
+    def __init__(self, ring: LEDRing):
+        self.ring = ring
+        server = self._create_osc_server()
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+
+    def _create_osc_server(self):
+        dispatcher = Dispatcher()
+        dispatcher.map('/led_ring', self.led_ring_handler)
+        return BlockingOSCUDPServer((IP, PORT), dispatcher)
+
+    def led_ring_handler(self, _, *args):
+        if len(args) != 4 or type(args[0]) is not int or type(args[1]) is not float or type(args[2]) is not float or type(args[3]) is not float:
+            print(f'invalid args received: {args}')
+            return
+        c = Color()
+        c.set_rgb(args[1:])
+        ring_num = args[0]
+        self.ring.set_ring(ring_num, c)
 
 
-def default_handler(address, *args):
-    print(f'DEFAULT {address}: {args}')
+def main():
+    osc_led = OscLed(FakeLED())
+    print(f'Running OSC server at {IP}:{PORT}. Press Ctrl+C to quit.')
+    while True:
+        sleep(1)
 
-def led_ring_handler(address, *args):
-    if len(args) != 4 or type(args[0]) is not float or type(args[1]) is not float or type(args[2]) is not float or type(args[3]) is not float:
-        print(f'invalid args received: {args}')
-        return
-    rgb = tuple(int(a*255) for a in args[1:])
-    ring_num = int(args[0])
-    set_ring(ring_num, rgb)
-
-
-dispatcher = Dispatcher()
-dispatcher.map('/led_ring', led_ring_handler)
-dispatcher.set_default_handler(default_handler)
-
-ip = '0.0.0.0'
-port = 1234
-
-server = BlockingOSCUDPServer((ip, port), dispatcher)
-server.serve_forever()  # Blocks forever
+if __name__ == '__main__':
+    main()
