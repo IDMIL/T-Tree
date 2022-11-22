@@ -3,14 +3,14 @@
 		"fileversion" : 1,
 		"appversion" : 		{
 			"major" : 8,
-			"minor" : 3,
-			"revision" : 3,
+			"minor" : 5,
+			"revision" : 1,
 			"architecture" : "x64",
 			"modernui" : 1
 		}
 ,
 		"classnamespace" : "box",
-		"rect" : [ 35.0, 84.0, 699.0, 715.0 ],
+		"rect" : [ 35.0, 85.0, 487.0, 930.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -40,6 +40,18 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-4",
+					"linecount" : 2,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 30.0, 37.0, 150.0, 34.0 ],
+					"text" : "Required modules:\nODOT"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-22",
 					"maxclass" : "comment",
 					"numinlets" : 1,
@@ -64,11 +76,11 @@
 				"box" : 				{
 					"id" : "obj-17",
 					"maxclass" : "newobj",
-					"numinlets" : 4,
+					"numinlets" : 3,
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
-					"patching_rect" : [ 125.0, 137.0, 60.0, 22.0 ],
-					"text" : "pack i f f f"
+					"patching_rect" : [ 121.0, 118.0, 54.0, 22.0 ],
+					"text" : "pack f f f"
 				}
 
 			}
@@ -80,7 +92,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 281.0, 4.0, 20.0, 140.0 ],
+					"patching_rect" : [ 282.5, 6.0, 20.0, 140.0 ],
 					"relative" : 1,
 					"size" : 4.0
 				}
@@ -123,7 +135,7 @@
 					"numoutlets" : 1,
 					"outlettype" : [ "" ],
 					"parameter_enable" : 0,
-					"patching_rect" : [ 379.0, 15.0, 20.0, 140.0 ],
+					"patching_rect" : [ 374.0, 6.0, 20.0, 140.0 ],
 					"size" : 1.0
 				}
 
@@ -135,8 +147,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "FullPacket" ],
-					"patching_rect" : [ 116.0, 176.0, 93.0, 22.0 ],
-					"text" : "o.pack /led_ring"
+					"patching_rect" : [ 116.0, 229.0, 155.0, 22.0 ],
+					"text" : "o.pack /led_ring/set_led/3/9"
 				}
 
 			}
@@ -154,29 +166,22 @@
  ],
 		"lines" : [ 			{
 				"patchline" : 				{
-					"destination" : [ "obj-17", 1 ],
+					"destination" : [ "obj-17", 0 ],
 					"source" : [ "obj-10", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-17", 2 ],
+					"destination" : [ "obj-17", 1 ],
 					"source" : [ "obj-13", 0 ]
 				}
 
 			}
 , 			{
 				"patchline" : 				{
-					"destination" : [ "obj-17", 3 ],
+					"destination" : [ "obj-17", 2 ],
 					"source" : [ "obj-14", 0 ]
-				}
-
-			}
-, 			{
-				"patchline" : 				{
-					"destination" : [ "obj-17", 0 ],
-					"source" : [ "obj-16", 0 ]
 				}
 
 			}
