@@ -1,2 +1,3 @@
-python-osc
 adafruit-circuitpython-neopixel
+colour
+python-osc
