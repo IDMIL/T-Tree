@@ -1,5 +1,5 @@
 # Standard libraries
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 
 # Third-party libraries
 from colour import Color
@@ -8,6 +8,14 @@ NUM_RINGS = 3
 LEDS_PER_RING = 8
 
 class LEDRing(ABC):
+    @abstractproperty
+    def num_rings(self):
+        pass
+
+    @abstractproperty
+    def leds_per_ring(self):
+        pass
+
     @abstractmethod
     def set_ring(self, ring_num, color: Color):
         pass
@@ -22,6 +30,14 @@ def RealLED(LEDRing):
         import neopixel
         PIXEL_GPIO_PIN = board.D18
         self.pixels = neopixel.NeoPixel(PIXEL_GPIO_PIN, NUM_RINGS*LEDS_PER_RING, auto_write=False)
+
+    @property
+    def num_rings(self):
+        return NUM_RINGS
+
+    @property
+    def leds_per_ring(self):
+        return LEDS_PER_RING
         
     def set_ring(self, ring_num, color: Color):
         if ring_num < 0 or ring_num >= NUM_RINGS or not isinstance(color, Color):
@@ -39,6 +55,14 @@ def RealLED(LEDRing):
         self.pixels.show()
 
 class FakeLED(LEDRing):
+    @property
+    def num_rings(self):
+        return NUM_RINGS
+
+    @property
+    def leds_per_ring(self):
+        return LEDS_PER_RING
+
     def set_ring(self, ring_num, color: Color):
         print(f'ring {ring_num} is now {color}')
 
