@@ -24,7 +24,7 @@ class LEDRing(ABC):
     def set_led(self, ring_num, led_num, color: Color):
         pass
 
-def RealLED(LEDRing):
+class RealLED(LEDRing):
     def __init__(self):
         import board
         import neopixel
