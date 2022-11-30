@@ -32,14 +32,14 @@ class OscLed:
             if led_num < 0 or led_num >= self.ring.leds_per_ring:
                 raise ValueError
         except ValueError:
-            print(f'address of led must be an int between 0 and {self.ring.leds_per_ring}. received: {address[-1]}')
+            print(f'address of led must be an int between 0 and {self.ring.leds_per_ring-1}. received: {address[-1]}')
             return
         try:
             ring_num = int(address[-2])
             if ring_num < 0 or ring_num >= self.ring.num_rings:
                 raise ValueError
         except ValueError:
-            print(f'address of ring must be an int between 0 and {self.ring.num_rings}. received: {address[-2]}')
+            print(f'address of ring must be an int between 0 and {self.ring.num_rings-1}. received: {address[-2]}')
             return
         if len(args) != 3:
             print(f'this handler requires 3 float values (r, g, b). received: {args}')
