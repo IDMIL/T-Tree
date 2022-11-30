@@ -74,7 +74,7 @@ class OscLed:
 
 
 def main():
-    osc_led = OscLed(FakeLED())
+    osc_led = OscLed(RealLED())
     print(f'Running OSC server at {IP}:{PORT}. Press Ctrl+C to quit.')
     while True:
         sleep(1)
