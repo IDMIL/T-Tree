@@ -1,9 +1,20 @@
+"""T-Tree LED OSC Server.
+Usage:
+  led_osc.py [--fake]
+  led_osc.py -h | --help
+  led_osc.py -v | --version
+Options:
+  --fake        Print the LED status rather than outputting to GPIO.
+  -h --help     Show this screen.
+  -v --version  Show version.
+"""
 # Standard library
 from time import sleep
 import threading
 
 # Third-party libraries
 from colour import Color
+from docopt import docopt
 from pythonosc.dispatcher import Dispatcher
 from pythonosc.osc_server import BlockingOSCUDPServer
 
@@ -73,11 +84,20 @@ class OscLed:
         self.ring.set_ring(ring_num, c)
 
 
-def main():
-    osc_led = OscLed(RealLED())
+def main(args):
+    if args['--fake']:
+        osc_led = OscLed(FakeLED())
+    else:
+        try:
+            osc_led = OscLed(RealLED())
+        except NotImplementedError as e:
+            print(e)
+            print("If you're not running on a Raspberry Pi, try using the --fake option.")
+            return
     print(f'Running OSC server at {IP}:{PORT}. Press Ctrl+C to quit.')
     while True:
         sleep(1)
 
 if __name__ == '__main__':
-    main()
+    args = docopt(__doc__, version="T-Tree LED OSC Server 0.1")
+    main(args)
