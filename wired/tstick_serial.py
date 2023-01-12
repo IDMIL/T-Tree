@@ -1,28 +1,35 @@
+# Standard libraries
+import time
+import threading
+
 # Local libraries
 from tstick_parser import TStickParser
 
 # Third-party libraries
-from pythonosc.udp_client import SimpleUDPClient
 import serial
 
 READ_SIZE = 16
+BAUDRATE = 57600
+DEFAULT_PORT = 'COM5'
 
-def create_callback(client):
-    def callback(message):
-        client.send_message(f'/wiredtstick/{message.name}', message.data)
-    return callback
-
+def read_serial_thread(ser, parser):
+    while True:
+        data = ser.read(READ_SIZE)
+        # for bite in data:
+        #     print(hex(bite), end='', flush=True)
+        parser.enqueue_data(data)
 
 def main():
-    ip = "127.0.0.1"
-    port = 1337
-    client = SimpleUDPClient(ip, port)  # Create client
     parser = TStickParser()
-    parser.subscribe(create_callback(client))
-    ser = serial.Serial('COM5', 115200)
-    ser.write(b's')
+    parser.subscribe(print)
+    print(f'Opening serial port {DEFAULT_PORT} at baud rate {BAUDRATE}...')
+    ser = serial.Serial(DEFAULT_PORT, BAUDRATE, timeout=3)
+    print('Serial connection established.')
+    threading.Thread(target=read_serial_thread, args=[ser, parser], daemon=True).start()
     while True:
-        parser.enqueue_data(ser.read(READ_SIZE))
+        input('Press enter to send start byte...')
+        ser.write(b's')
+        print('Start byte written.')
 
 if __name__ == '__main__':
     main()
