@@ -9,8 +9,8 @@ ranges = {}
 
 class MinMax:
     def __init__(self, vals: tuple):
-        self.mins: tuple = list(vals)
-        self.maxs: tuple = list(vals)
+        self.mins: list = list(vals)
+        self.maxs: list = list(vals)
         self.length = len(vals)
 
     def update(self, vals: tuple):
