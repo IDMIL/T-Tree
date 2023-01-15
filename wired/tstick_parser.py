@@ -9,7 +9,7 @@ Message = namedtuple("Message", ["name", "data"])
 
 # Mappings for the Soprano T-Stick 2G 012.
 class Codes:
-    codes = {
+    data = {
         0: "info", # Two bytes, indicating serial number and firmware revision
         1: "touch", # Six bytes, for six different areas of t-Stick?
         2: "jab", # ?
@@ -51,14 +51,13 @@ class TStickParser:
             if self.data_q.empty():
                 sleep(0.01)
                 continue
-            data = self.data_q.get()
-            for bite in data:
+            for bite in self.data_q.get():
                 if self.state == ParserState.UNKNOWN:
                     if bite == Codes.delimiter:
                         self.state = ParserState.AWAITING_INFO
                 elif self.state == ParserState.AWAITING_INFO:
-                    if bite in Codes.codes:
-                        message = Message(Codes.codes[bite], [])
+                    if bite in Codes.data:
+                        message = Message(Codes.data[bite], [])
                     else:
                         message = Message("unknown", [])
                     self.state = ParserState.AWAITING_DATA
