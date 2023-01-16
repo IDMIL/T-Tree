@@ -24,14 +24,26 @@ class TStickParser:
         hi, lo = data[0], data[1]
         return hi*256 + lo
 
+    def decode_touch(self, touch_byte):
+        out = []
+        mask = 0b10000000
+        while mask:
+            bit = touch_byte & mask
+            if bit:
+                out.append(1)
+            else:
+                out.append(0)
+            mask = mask >> 1
+        return out
+
     def parse(self, message: Message):
         raise NotImplementedError
 
 class TStick172Parser(TStickParser):
     def parse(self, message: Message):
         if message.name == "touch":
-            data = self.decode_slip(message.data)
-            self.publish_signal("touch", data)
+            touch = self.decode_touch(message.data[1]) + self.decode_touch(message.data[0])
+            self.publish_signal("raw/capsense", touch)
         elif message.name == "periodic":
             if len(message.data) != 10:
                 return
