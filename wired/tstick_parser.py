@@ -42,7 +42,9 @@ class TStickParser:
 class TStick172Parser(TStickParser):
     def parse(self, message: Message):
         if message.name == "touch":
-            touch = self.decode_touch(message.data[1]) + self.decode_touch(message.data[0])
+            touch = []
+            for touch_data in reversed(message.data):
+                touch.extend(self.decode_touch(touch_data))
             self.publish_signal("raw/capsense", touch)
         elif message.name == "periodic":
             if len(message.data) != 10:
