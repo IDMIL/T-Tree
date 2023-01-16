@@ -41,7 +41,7 @@ class TStickLexer:
         for callback in self.subscribers:
             callback(message)
 
-    def enqueue_data(self, data: bytes):
+    def enqueue(self, data: bytes):
         self.data_q.put(data)
 
     def lex_thread(self):
