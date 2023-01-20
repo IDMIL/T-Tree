@@ -55,7 +55,7 @@ def main(args):
         send_char = b's'
     lexer = TStickLexer()
     parser = TStick172Parser()
-    sender = OSCSender('TStick_172', '127.0.0.1', 1337)
+    sender = OSCSender('TStick_172', '127.0.0.1', 1234)
     lexer.subscribe(parser.parse)
     parser.subscribe(sender.send)
     # All the work is done in threads, so just sleep after this.
