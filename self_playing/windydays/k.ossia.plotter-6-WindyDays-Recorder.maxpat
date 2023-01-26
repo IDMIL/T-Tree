@@ -41,6 +41,21 @@
 		"assistshowspatchername" : 0,
 		"boxes" : [ 			{
 				"box" : 				{
+					"id" : "obj-20",
+					"linecount" : 11,
+					"maxclass" : "comment",
+					"numinlets" : 1,
+					"numoutlets" : 0,
+					"patching_rect" : [ 825.0, 81.0, 150.0, 154.0 ],
+					"presentation" : 1,
+					"presentation_linecount" : 6,
+					"presentation_rect" : [ 669.0, 54.0, 374.0, 87.0 ],
+					"text" : "Requires\nlibossia-max - https://ossia.io/site-libossia/about.html\nmicheal norris spindrift - \nhttps://www.michaelnorris.info/software/spindrift\nFluCoMa - \nhttps://www.flucoma.org/ (or in your package manager ;) )"
+				}
+
+			}
+, 			{
+				"box" : 				{
 					"id" : "obj-28",
 					"maxclass" : "newobj",
 					"numinlets" : 0,
@@ -4509,7 +4524,7 @@
 		"dependency_cache" : [ 			{
 				"name" : "fluid.audiofilesin.maxpat",
 				"bootpath" : "~/Documents/Max 8/Packages/FluidCorpusManipulation/patchers",
-				"patcherrelativepath" : "../../Max 8/Packages/FluidCorpusManipulation/patchers",
+				"patcherrelativepath" : "../../../../Max 8/Packages/FluidCorpusManipulation/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}
@@ -4540,7 +4555,7 @@
 , 			{
 				"name" : "fluid.concataudiofiles.maxpat",
 				"bootpath" : "~/Documents/Max 8/Packages/FluidCorpusManipulation/patchers",
-				"patcherrelativepath" : "../../Max 8/Packages/FluidCorpusManipulation/patchers",
+				"patcherrelativepath" : "../../../../Max 8/Packages/FluidCorpusManipulation/patchers",
 				"type" : "JSON",
 				"implicit" : 1
 			}
@@ -4563,7 +4578,7 @@
 , 			{
 				"name" : "fluid.plotter.js",
 				"bootpath" : "~/Documents/Max 8/Packages/FluidCorpusManipulation/jsui",
-				"patcherrelativepath" : "../../Max 8/Packages/FluidCorpusManipulation/jsui",
+				"patcherrelativepath" : "../../../../Max 8/Packages/FluidCorpusManipulation/jsui",
 				"type" : "TEXT",
 				"implicit" : 1
 			}
@@ -4574,7 +4589,7 @@
 , 			{
 				"name" : "lb.maxpat",
 				"bootpath" : "~/Documents/Max 8/Packages/RTC-lib_71/patchers/Toolbox",
-				"patcherrelativepath" : "../../Max 8/Packages/RTC-lib_71/patchers/Toolbox",
+				"patcherrelativepath" : "../../../../Max 8/Packages/RTC-lib_71/patchers/Toolbox",
 				"type" : "JSON",
 				"implicit" : 1
 			}
