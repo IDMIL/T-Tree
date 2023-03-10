@@ -1,6 +1,6 @@
 """T-Tree LED OSC Server.
 Usage:
-  led_osc.py [--fake]
+  led_osc.py [--fake] (spi|pwm)
   led_osc.py -h | --help
   led_osc.py -v | --version
 Options:
@@ -85,11 +85,18 @@ class OscLed:
 
 
 def main(args):
+    method = None
+    if args['spi']:
+        method = 'spi'
+    elif args['pwm']:
+        method = 'pwm'
+
+
     if args['--fake']:
         osc_led = OscLed(FakeLED())
     else:
         try:
-            osc_led = OscLed(RealLED())
+            osc_led = OscLed(RealLED(method=method))
         except NotImplementedError as e:
             print(e)
             print("If you're not running on a Raspberry Pi, try using the --fake option.")
