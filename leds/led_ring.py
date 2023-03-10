@@ -25,11 +25,14 @@ class LEDRing(ABC):
         pass
 
 class RealLED(LEDRing):
-    def __init__(self):
+    def __init__(self, method='pwm'):
         import board
         import neopixel
-        PIXEL_GPIO_PIN = board.D18
-        self.pixels = neopixel.NeoPixel(PIXEL_GPIO_PIN, NUM_RINGS*LEDS_PER_RING, brightness=1.0, auto_write=False)
+        import neopixel_spi
+        if method == 'spi':
+            self.pixels = neopixel_spi.NeoPixel_SPI(board.SPI(), NUM_RINGS*LEDS_PER_RING, pixel_order=neopixel_spi.GRB, bit0=0b10000000)
+        if method == 'pwm':
+            self.pixels = neopixel.NeoPixel(board.D18, NUM_RINGS*LEDS_PER_RING, brightness=1.0, auto_write=False)
 
     @property
     def num_rings(self):
