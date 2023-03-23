@@ -57,3 +57,22 @@ class TStick172Parser(TStickParser):
             self.publish_signal("raw/accl", [accel_x, accel_y, accel_z])
             self.publish_signal("raw/fsr", fsr_data)
             self.publish_signal("piezo", piezo_data)
+
+class TStick012Parser(TStickParser):
+    def parse(self, message: Message):
+        if message.name == "touch":
+            touch = []
+            for touch_data in reversed(message.data):
+                touch.extend(self.decode_touch(touch_data))
+            self.publish_signal("raw/capsense", touch)
+        elif message.name == "periodic":
+            if len(message.data) != 10:
+                return
+            accel_x = self.decode_slip(message.data[0:2])
+            accel_y = self.decode_slip(message.data[2:4])
+            accel_z = self.decode_slip(message.data[4:6])
+            fsr_data = self.decode_slip(message.data[6:8])
+            piezo_data = self.decode_slip(message.data[8:10])
+            self.publish_signal("raw/accl", [accel_x, accel_y, accel_z])
+            self.publish_signal("raw/fsr", fsr_data)
+            self.publish_signal("piezo", piezo_data)

@@ -1,6 +1,8 @@
 """Wired T-Stick Serial Tool.
 Usage:
-  tstick_serial.py <port> <baudRate> [--info]
+  tstick_serial.py bridge <port> <tstick_name> [--info]
+  tstick_serial.py list_ports
+  tstick_serial.py list_tsticks
   tstick_serial.py -h | --help
   tstick_serial.py -v | --version
 Options:
@@ -17,8 +19,10 @@ import threading
 # Third-party libraries
 from docopt import docopt
 import serial
+import serial.tools.list_ports
 
 # Local libraries
+from tstick import all_tsticks
 from tstick_lexer import TStickLexer
 from tstick_parser import TStick172Parser
 from tstick_osc import OSCSender
@@ -48,16 +52,36 @@ class TStickSerial:
 
 
 def main(args):
-    serial_port, baudrate = args["<port>"], args["<baudRate>"]
+    tsticks = all_tsticks()
+    if args['bridge']:
+        serial_port, tstick_name = args["<port>"], args["<tstick_name>"]
+        tstick = None
+        for ts in tsticks:
+            if tstick_name == ts.name():
+                tstick = ts
+        if tstick is None:
+            print(f"Error: couldn't find TStick with name {tstick_name}")
+            return
+    elif args['list_ports']:
+        ports = serial.tools.list_ports.comports()
+        for port, desc, hwid in sorted(ports):
+            print("{}: {} [{}]".format(port, desc, hwid))
+        return
+    elif args['list_tsticks']:
+        for tstick in tsticks:
+            print(tstick.name())
+        return
     if args['--info']:
         send_char = b'i'
     else:
         send_char = b's'
-    lexer = TStickLexer()
-    parser = TStick172Parser()
-    sender = OSCSender('TStick_172', '127.0.0.1', 1234)
+    lexer = tstick.lexer()
+    parser = tstick.parser()
+    baudrate = tstick.baudrate()
+    sender = OSCSender(tstick.name(), '127.0.0.1', 1234)
     lexer.subscribe(parser.parse)
     parser.subscribe(sender.send)
+    parser.subscribe(print)
     # All the work is done in threads, so just sleep after this.
     _ = TStickSerial(serial_port, baudrate, READ_SIZE, lexer.enqueue, send_char)
     while True:
