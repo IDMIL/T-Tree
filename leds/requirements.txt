@@ -1,4 +1,5 @@
 adafruit-circuitpython-neopixel
+adafruit-circuitpython-neopixel-spi
 colour
 docopt
 python-osc
