@@ -1,0 +1,6 @@
+[Unit]
+Description=T-Tree 2.0 Service
+[Service]
+ExecStart=/usr/bin/python /home/paul/T-Tree/ttree.py
+[Install]
+WantedBy=multi-user.target
