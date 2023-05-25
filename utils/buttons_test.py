@@ -11,7 +11,7 @@ class ArcadeButton(NamedTuple):
     color: Color
 
 
-TTree_Buttons = (
+TTree_Buttons = tuple(
     ArcadeButton(Button(5), LED(12), Color('green')),
     ArcadeButton(Button(6), LED(16), Color('yellow')),
     ArcadeButton(Button(13), LED(20), Color('blue')),
