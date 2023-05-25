@@ -1,9 +1,12 @@
 # Standard libraries
+import os
 from signal import pause
 from subprocess import Popen
 
 # Third-party libraries
 from gpiozero import Button, LED
+
+path_prefix = '/home/paul/T-Tree/buttons'
 
 
 class ArcadeButton:
@@ -24,10 +27,10 @@ class ArcadeButton:
 
 
 def main():
-    green = ArcadeButton(5, 12, ['aplay', 'triangle.wav'])
-    yellow = ArcadeButton(6, 16, ['aplay', 'guitar.wav'])
-    blue = ArcadeButton(13, 20, ['aplay', 'cowbell.wav'])
-    red = ArcadeButton(19, 21,  ['aplay', '808.wav'])
+    green = ArcadeButton(5, 12, ['aplay', os.path.join(path_prefix, 'triangle.wav')])
+    yellow = ArcadeButton(6, 16, ['aplay', os.path.join(path_prefix, 'guitar.wav')])
+    blue = ArcadeButton(13, 20, ['aplay', os.path.join(path_prefix, 'cowbell.wav')])
+    red = ArcadeButton(19, 21,  ['aplay', os.path.join(path_prefix, '808.wav')])
     pause()
 
 
