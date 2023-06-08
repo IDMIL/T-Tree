@@ -1,3 +1,0 @@
-docopt
-pyserial
-python-osc

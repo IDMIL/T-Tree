@@ -5,7 +5,7 @@ from rainbowio import colorwheel
 import neopixel
 import neopixel_spi
 
-num_pixels = 4*9
+num_pixels = 4*6
 
 pixels = neopixel_spi.NeoPixel_SPI(board.SPI(), num_pixels, pixel_order=neopixel_spi.GRB, bit0=0b10000000)
 

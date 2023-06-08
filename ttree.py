@@ -19,6 +19,11 @@ NUM_BRANCHES = 4
 PATCH_DIR = '/home/paul/T-Tree/patches'
 
 PD_INVOCATION = Template('pd -nogui -send "port ${port}" -send "name ${name}" -send "pd dsp 1" -open "${patch}"')
+# PD_INVOCATION = Template('osc-utility s --port ${port}')
+
+logging.basicConfig()
+logging.getLogger().setLevel(logging.DEBUG)
+
 
 @dataclass
 class Branch:
@@ -52,11 +57,15 @@ class TTree:
         invocation = PD_INVOCATION.substitute(port=port, name=name, patch=patch)
         logging.debug(f'running {invocation}')
         invocation = shlex.split(invocation)
-        return subprocess.Popen(invocation, stderr=subprocess.DEVNULL)
+        print(invocation)
+        # return subprocess.Popen(invocation, stdout=subprocess.PIPE)
+        return subprocess.Popen(invocation, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
 
     def change_patch(self, branch_index):
-        logging.debug(f'changing patch for {self.branches[branch_index].arcade.color}')
         branch = self.branches[branch_index]
+        if not branch.paired_to:
+            return
+        logging.debug(f'changing patch for {branch.arcade.color}')
         if branch.patch_proc:
             branch.patch_proc.kill()
         branch.patch_index = (branch.patch_index + 1) % len(self.patches)
