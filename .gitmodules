@@ -1,3 +1,3 @@
 [submodule "puara_serial_manager"]
-	path = puara_serial_manager
+	path = src/puara_serial_manager
 	url = https://github.com/Puara/puara-serial-manager.git
