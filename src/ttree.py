@@ -8,6 +8,8 @@ from typing import Optional
 import logging
 import shlex
 import subprocess
+import pickle
+import os
 
 # Local libraries
 from buttons import ArcadeButton, TTree_Buttons
@@ -95,6 +97,16 @@ class TTree:
                 break
         self.pair(pressed_index, device_name)
         return psm.Config('192.168.90.1', self.branches[pressed_index].port)
+    
+    def save_state(self, filename):
+        with open(filename, 'wb') as f:
+            pickle.dump(self.branches, f)
+
+    def load_state(self):
+        if os.path.exists('t_tree_state.pickle'):
+            with open('t_tree_state.pickle', 'rb') as f:
+                self.branches = pickle.load(f)
+
 
 
 if __name__ == '__main__':
