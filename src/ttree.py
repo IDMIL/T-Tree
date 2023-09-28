@@ -98,7 +98,7 @@ class TTree:
             branch.patch_proc.kill()
         branch.patch_proc = self.launch_pd(branch.port, device_name, self.patches[0])
         branch.arcade.led.on()
-        self.save_state('t_tree_state.pickle')
+        self.save_state('t_tree_state.json')
 
     def config_delegate(self, device_name) -> psm.Config:
         logging.debug('pairing...')
