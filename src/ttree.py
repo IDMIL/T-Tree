@@ -42,6 +42,7 @@ class Branch:
             'patch_index': self.patch_index,
         }
 
+    @classmethod
     def from_dict(cls, dct):
         return cls(
             port=dct['port'],
