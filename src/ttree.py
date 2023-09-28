@@ -106,7 +106,7 @@ class TTree:
                 pickle.dump(self.branches, f)
 
     def load_state(self):
-        if os.path.exists('t_tree_state.pickle'):
+        if os.path.exists('t_tree_state.pickle') and os.path.getsize('t_tree_state.pickle') > 0:
             with open('t_tree_state.pickle', 'rb') as f:
                 self.branches = pickle.load(f)
 
