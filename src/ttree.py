@@ -101,8 +101,9 @@ class TTree:
         return psm.Config('192.168.90.1', self.branches[pressed_index].port)
     
     def save_state(self, filename):
-        with open(filename, 'wb') as f:
-            pickle.dump(self.branches, f)
+        with self.lock:
+            with open(filename, 'wb') as f:
+                pickle.dump(self.branches, f)
 
     def load_state(self):
         if os.path.exists('t_tree_state.pickle'):
