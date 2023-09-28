@@ -123,11 +123,17 @@ class TTree:
             json.dump(state, f)
 
     def load_state(self):
-        filename = 't_tree_state.json'
-        if os.path.exists(filename) and os.path.getsize(filename) > 0:
-            with open(filename, 'r') as f:
+        if os.path.exists('t_tree_state.json') and os.path.getsize('t_tree_state.json') > 0:
+            with open('t_tree_state.json', 'r') as f:
                 state = json.load(f)
                 self.branches = [Branch.from_dict(branch) for branch in state]
+                for i, branch in enumerate(self.branches):
+                    # Re-initialize the arcade attribute here
+                    branch.arcade = TTree_Buttons[i]
+                    # Recreate the subprocess if needed.
+                    if branch.paired_to:
+                        branch.patch_proc = self.launch_pd(branch.port, branch.paired_to, self.patches[branch.patch_index])
+
 
 
 
