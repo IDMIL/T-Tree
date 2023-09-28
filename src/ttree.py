@@ -8,8 +8,8 @@ from typing import Optional
 import logging
 import shlex
 import subprocess
-import pickle
 import os
+import json
 
 # Local libraries
 from buttons import ArcadeButton, TTree_Buttons
@@ -34,6 +34,22 @@ class Branch:
     patch_index: int
     arcade: ArcadeButton
     patch_proc: Optional[subprocess.Popen]
+    
+    def to_dict(self):
+        return {
+            'port': self.port,
+            'paired_to': self.paired_to,
+            'patch_index': self.patch_index,
+        }
+
+    def from_dict(cls, dct):
+        return cls(
+            port=dct['port'],
+            paired_to=dct['paired_to'],
+            patch_index=dct['patch_index'],
+            arcade=None,  
+            patch_proc=None  
+        )
 
 class TTree:
     def __init__(self):
@@ -101,14 +117,16 @@ class TTree:
         return psm.Config('192.168.90.1', self.branches[pressed_index].port)
     
     def save_state(self, filename):
-        with self.lock:
-            with open(filename, 'wb') as f:
-                pickle.dump(self.branches, f)
+        state = [branch.to_dict() for branch in self.branches]
+        with open(filename, 'w') as f:
+            json.dump(state, f)
 
     def load_state(self):
-        if os.path.exists('t_tree_state.pickle') and os.path.getsize('t_tree_state.pickle') > 0:
-            with open('t_tree_state.pickle', 'rb') as f:
-                self.branches = pickle.load(f)
+        filename = 't_tree_state.json'
+        if os.path.exists(filename) and os.path.getsize(filename) > 0:
+            with open(filename, 'r') as f:
+                state = json.load(f)
+                self.branches = [Branch.from_dict(branch) for branch in state]
 
 
 
