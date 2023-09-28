@@ -55,8 +55,8 @@ class Branch:
 class TTree:
     def __init__(self):
         self.branches = self.create_branches()
-        self.load_state()
         self.patches = self.find_patches()
+        self.load_state()
         self.setup_buttons()
 
     def setup_buttons(self):
