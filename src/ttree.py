@@ -40,6 +40,8 @@ class Branch:
             'port': self.port,
             'paired_to': self.paired_to,
             'patch_index': self.patch_index,
+            'tstick_identifier': self.tstick_identifier,
+
         }
 
     @classmethod
@@ -48,6 +50,7 @@ class Branch:
             port=dct['port'],
             paired_to=dct['paired_to'],
             patch_index=dct['patch_index'],
+            tstick_identifier=dct.get('tstick_identifier'),  # Load the T-Stick identifier from the dictionary
             arcade=None,  
             patch_proc=None  
         )
@@ -94,6 +97,7 @@ class TTree:
     def pair(self, branch_index, device_name):
         branch = self.branches[branch_index]
         branch.paired_to = device_name
+        # branch.tstick_identifier = tstick_identifier  # Save the T-Stick identifier
         branch.patch_index = 0
         if branch.patch_proc:
             branch.patch_proc.kill()
@@ -133,8 +137,9 @@ class TTree:
                     # Recreate the subprocess if needed.
                     if branch.paired_to:
                         branch.patch_proc = self.launch_pd(branch.port, branch.paired_to, self.patches[branch.patch_index])
-
-
+                    if branch.tstick_identifier:
+                        self.auto_pair_tstick(branch, branch.tstick_identifier)  # Attempt to auto-pair the T-Stick
+            logging.info(f"Loaded branches: {self.branches}")
 
 
 if __name__ == '__main__':
