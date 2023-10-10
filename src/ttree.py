@@ -147,7 +147,7 @@ class TTree:
 
 
     def osc_server_thread(self):
-            server = osc_server.ThreadingOSCUDPServer(("192.168.90.21", 8005), self.dispatcher)
+            server = osc_server.ThreadingOSCUDPServer(("127.0.0.1", 8005), self.dispatcher)
             print("Serving OSC on {}".format(server.server_address))
             server.serve_forever()
 
