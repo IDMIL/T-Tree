@@ -64,7 +64,7 @@ class TTree:
 
         # Set up the OSC dispatcher
         self.dispatcher = dispatcher.Dispatcher()
-        self.dispatcher.map("/some/osc/address", self.some_handler_function)
+        self.dispatcher.map("/pressure", self.handler_function)
 
         # Start OSC server in a separate thread
         self.osc_thread = threading.Thread(target=self.osc_server_thread)
@@ -151,7 +151,7 @@ class TTree:
             print("Serving OSC on {}".format(server.server_address))
             server.serve_forever()
 
-    def some_handler_function(self, *args):
+    def handler_function(self, *args):
         # Handle incoming OSC data
         print("Received OSC message2:", args)
 
