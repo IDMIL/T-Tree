@@ -10,6 +10,9 @@ import shlex
 import subprocess
 import os
 import json
+from pythonosc import dispatcher, osc_server
+import threading
+
 
 # Local libraries
 from buttons import ArcadeButton, TTree_Buttons
@@ -58,6 +61,14 @@ class TTree:
         self.patches = self.find_patches()
         self.load_state()
         self.setup_buttons()
+
+        # Set up the OSC dispatcher
+        self.dispatcher = dispatcher.Dispatcher()
+        self.dispatcher.map("/some/osc/address", self.some_handler_function)
+
+        # Start OSC server in a separate thread
+        self.osc_thread = threading.Thread(target=self.osc_server_thread)
+        self.osc_thread.start()
 
     def setup_buttons(self):
         for i, branch in enumerate(self.branches):
@@ -134,6 +145,15 @@ class TTree:
                     if branch.paired_to:
                         branch.patch_proc = self.launch_pd(branch.port, branch.paired_to, self.patches[branch.patch_index])
 
+
+    def osc_server_thread(self):
+            server = osc_server.ThreadingOSCUDPServer(("127.0.0.1", 8000), self.dispatcher)
+            print("Serving OSC on {}".format(server.server_address))
+            server.serve_forever()
+
+    def some_handler_function(self, *args):
+        # Handle incoming OSC data
+        print("Received OSC message2:", args)
 
 
 
