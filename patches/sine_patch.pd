@@ -153,8 +153,8 @@
 #X msg 1057 622 send /pressure \$1;
 #X floatatom 1086 578 5 0 0 0 - - - 0;
 #X obj 1032 672 netsend;
-#X msg 1037 524 connect 127.0.0.1 8001;
 #X obj 1034 471 loadbang;
+#X msg 1037 524 connect 127.0.0.1 8005;
 #X connect 0 0 26 0;
 #X connect 1 0 25 0;
 #X connect 2 0 17 0;
@@ -257,6 +257,6 @@
 #X connect 112 0 58 0;
 #X connect 113 0 115 0;
 #X connect 114 0 113 0;
-#X connect 116 0 115 0;
-#X connect 117 0 116 0;
+#X connect 116 0 117 0;
+#X connect 117 0 115 0;
 #X coords 0 0 1 1 470 216 0;
